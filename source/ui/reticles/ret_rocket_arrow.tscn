@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bnwyw5y5fuot4" path="res://source/script/draw_polyline.gd" id="2_6q558"]
 
-[node name="RetRocketArrow" type="Node2D" unique_id=1607398988]
+[node name="RetRocketArrow" type="Control" unique_id=1345845589]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("2_6q558")
-points = PackedVector2Array(31, -7, 18, 0, 31, 7)
-metadata/_custom_type_script = "uid://bnwyw5y5fuot4"
+points = PackedVector2Array(32, -10, 16, 0, 32, 10)

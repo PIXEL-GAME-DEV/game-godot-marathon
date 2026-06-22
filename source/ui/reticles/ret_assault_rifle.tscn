@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/draw_circle.gd" id="1_pl31b"]
 [ext_resource type="Script" uid="uid://bcm8ubq8g3ur8" path="res://source/ui/draw_multiline.gd" id="2_bl2nu"]
+[ext_resource type="Script" uid="uid://crdl0hix1fm4a" path="res://source/ui/draw_arc.gd" id="4_46dgv"]
 [ext_resource type="Texture2D" uid="uid://drhaa80ogv7ea" path="res://assets/textures/ui/ret_machinegun.png" id="5_orsqc"]
 
 [node name="RetMachinegun" type="Control" unique_id=1394200693]
@@ -16,40 +17,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1593976410]
-modulate = Color(0, 1, 0, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" type="Control" parent="CenterContainer" unique_id=1632786687]
-custom_minimum_size = Vector2(22, 22)
-custom_maximum_size = Vector2(22, 22)
-layout_mode = 2
-script = ExtResource("1_pl31b")
-position = Vector2(11, 11)
-radius = 10.0
-filled = false
-
-[node name="Multiline2D" type="Node2D" parent="CenterContainer" unique_id=1454254150]
-self_modulate = Color(1, 1, 1, 0.3019608)
-use_parent_material = true
-position = Vector2(32, 32)
-script = ExtResource("2_bl2nu")
-points = PackedVector2Array(19, 0, 30, 0, 0, 19, 0, 30, -19, 0, -30, 0, 0, -19, 0, -30)
-
-[node name="Control2" type="Control" parent="CenterContainer" unique_id=1463206930]
-custom_minimum_size = Vector2(64, 64)
-custom_maximum_size = Vector2(64, 64)
-layout_mode = 2
-script = ExtResource("1_pl31b")
-position = Vector2(32, 32)
-radius = 31.0
-filled = false
-
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1816034159]
 layout_mode = 1
 anchors_preset = 15
@@ -58,3 +25,127 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_orsqc")
+
+[node name="InnerRing" type="Control" parent="." unique_id=1632786687]
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 11.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pl31b")
+position = Vector2(11, 11)
+radius = 10.0
+filled = false
+
+[node name="Multiline" type="Control" parent="." unique_id=1478499440]
+self_modulate = Color(1, 1, 1, 0.3019608)
+use_parent_material = true
+custom_minimum_size = Vector2(60, 60)
+custom_maximum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_bl2nu")
+points = PackedVector2Array(49, 30, 60, 30, 30, 49, 30, 60, 11, 30, 0, 30, 30, 0, 30, 11)
+
+[node name="OuterRing" type="Control" parent="." unique_id=1463206930]
+visible = false
+custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pl31b")
+position = Vector2(32, 32)
+radius = 31.0
+filled = false
+
+[node name="Control1" type="Control" parent="." unique_id=2012765214]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_46dgv")
+radius = 31.0
+start_angle = -0.29670597283903605
+end_angle = 0.29670597283903605
+count = 9
+
+[node name="Control2" type="Control" parent="." unique_id=1146782914]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+script = ExtResource("4_46dgv")
+radius = 31.0
+start_angle = -0.29670597283903605
+end_angle = 0.29670597283903605
+count = 9
+
+[node name="Control3" type="Control" parent="." unique_id=318311324]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.1415927
+script = ExtResource("4_46dgv")
+radius = 31.0
+start_angle = -0.29670597283903605
+end_angle = 0.29670597283903605
+count = 9
+
+[node name="Control4" type="Control" parent="." unique_id=607522009]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 4.712389
+script = ExtResource("4_46dgv")
+radius = 31.0
+start_angle = -0.29670597283903605
+end_angle = 0.29670597283903605
+count = 9
