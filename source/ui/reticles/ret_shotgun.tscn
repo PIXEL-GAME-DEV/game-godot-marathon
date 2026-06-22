@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dojjig8fcke1t"]
 
-[ext_resource type="Script" uid="uid://1sckra6xyg4g" path="res://source/ui/rescale_container.gd" id="1_ivp6s"]
-[ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/circle.gd" id="2_03nlb"]
+[ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/draw_circle.gd" id="2_03nlb"]
 [ext_resource type="Material" uid="uid://vft2418maqcq" path="res://assets/materials/shader/canvas_item/screen.tres" id="2_a7hcv"]
 [ext_resource type="Script" uid="uid://c40rxkufutmua" path="res://source/script/rect.gd" id="3_a7hcv"]
 
@@ -70,46 +69,30 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 1
 
-[node name="RescaleContainer" type="Container" parent="." unique_id=636664299]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1987908852]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_ivp6s")
-metadata/_custom_type_script = "uid://1sckra6xyg4g"
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="RescaleContainer" unique_id=683872377]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="RescaleContainer/SubViewportContainer" unique_id=1238835190]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(355, 355)
-render_target_update_mode = 4
-
-[node name="CenterContainer" type="CenterContainer" parent="RescaleContainer/SubViewportContainer/SubViewport" unique_id=1987908852]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = -608.0
+offset_top = -328.0
+offset_right = -608.0
+offset_bottom = -328.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=1145396226]
+[node name="Control" type="Control" parent="CenterContainer" unique_id=1145396226]
 layout_mode = 2
 script = ExtResource("2_03nlb")
 radius = 16.0
+color = null
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=1475682349]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CenterContainer" unique_id=1475682349]
 position = Vector2(608, 328)
 copy_mode = 2
 rect = Rect2(0, 0, 64, 64)
 
-[node name="InnerRing" type="Node2D" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=36259558]
+[node name="InnerRing" type="Node2D" parent="CenterContainer" unique_id=36259558]
 self_modulate = Color(1, 1, 1, 0.21960784)
 position = Vector2(640, 360)
 script = SubResource("GDScript_qn5ua")
@@ -117,21 +100,29 @@ radius = 16.0
 filled = false
 width = 4.0
 
-[node name="RectPlus1" type="Control" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=1035807185]
+[node name="RectPlus1" type="Control" parent="CenterContainer" unique_id=1035807185]
 material = ExtResource("2_a7hcv")
 layout_mode = 2
 script = ExtResource("3_a7hcv")
 metadata/_custom_type_script = "uid://c40rxkufutmua"
 
-[node name="RectPlus2" type="Control" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=1725619778]
+[node name="RectPlus2" type="Control" parent="CenterContainer" unique_id=1725619778]
 material = ExtResource("2_a7hcv")
 layout_mode = 2
 script = ExtResource("3_a7hcv")
 metadata/_custom_type_script = "uid://c40rxkufutmua"
 
-[node name="OuterRing" type="Node2D" parent="RescaleContainer/SubViewportContainer/SubViewport/CenterContainer" unique_id=231682306]
+[node name="OuterRing" type="Node2D" parent="CenterContainer" unique_id=231682306]
 self_modulate = Color(1, 1, 1, 0.627451)
 position = Vector2(640, 360)
 script = SubResource("GDScript_qn5ua")
 radius = 19.0
 filled = false
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=503500486]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -12,9 +12,9 @@ extends CanvasItem
 		points = value
 		queue_redraw()
 
-@export var colors: PackedColorArray:
+@export var color := Color.WHITE:
 	set(value):
-		colors = value
+		color = value
 		queue_redraw()
 
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var width := 2.0:
@@ -35,9 +35,24 @@ extends CanvasItem
 		queue_redraw()
 
 
+func _ready() -> void:
+	queue_redraw()
+
+
 func _draw() -> void:
 	if improved:
-		CanvasItemFuncs.draw_multiline_colors(self, points, colors, width,
-				anti_aliasing, anti_aliasing_size)
+		_draw_polyline_improved()
 	else:
-		draw_multiline_colors(points, colors, width, anti_aliasing)
+		draw_polyline(points, Color.WHITE, width, anti_aliasing)
+
+
+func _draw_polyline_improved():
+	if anti_aliasing and anti_aliasing_size:
+		var aa := CanvasItemFuncs.get_aa(self, anti_aliasing_size*0.8)
+		var w := clampf(width / aa - anti_aliasing_size*1.25, 0.0, INF)
+		var p: PackedVector2Array = []
+		for point in points:
+			p.append(point / aa)
+		draw_polyline(p, color, w, true)
+	else:
+		draw_polyline(points, color, width, false)

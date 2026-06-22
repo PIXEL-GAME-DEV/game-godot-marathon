@@ -7,14 +7,9 @@ extends CanvasItem
 		improved = value
 		queue_redraw()
 
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var from := Vector2.ZERO:
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var points: PackedVector2Array:
 	set(value):
-		from = value
-		queue_redraw()
-
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var to := Vector2.ZERO:
-	set(value):
-		to = value
+		points = value
 		queue_redraw()
 
 @export var color := Color.WHITE:
@@ -61,9 +56,9 @@ func _ready() -> void:
 
 func _draw() -> void:
 	if improved:
-		_draw_line_improved()
+		_draw_multiline_improved()
 	else:
-		draw_line(from, to, Color.WHITE, width, anti_aliasing)
+		draw_multiline(points, color, width, anti_aliasing)
 
 
 func _connect():
@@ -80,12 +75,13 @@ func _disconnect():
 		viewport.size_changed.disconnect(queue_redraw)
 
 
-func _draw_line_improved():
-	var aa := CanvasItemFuncs.get_aa(self, anti_aliasing_size * 0.8)
-	#var offset := Vector2.ONE * Math.triangle_wave(width, 2)/2
-	#offset *= aa
-	if anti_aliasing:
+func _draw_multiline_improved():
+	if anti_aliasing and anti_aliasing_size > 0:
+		var aa := CanvasItemFuncs.get_aa(self, anti_aliasing_size * 0.8)
 		var w := clampf(width / aa - anti_aliasing_size * 1.25, 0.0, INF)
-		draw_line(from / aa, to / aa, color, w, true)
+		var p: PackedVector2Array = []
+		for point in points:
+			p.append(point / aa)
+		draw_multiline(p, color, w, true)
 	else:
-		draw_line(from, to, color, width, false)
+		draw_multiline(points, color, width, false)

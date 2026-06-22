@@ -7,6 +7,11 @@ extends CanvasItem
 		points = value
 		queue_redraw()
 
+@export var color := Color.WHITE:
+	set(value):
+		color = value
+		queue_redraw()
+
 @export var uvs: PackedVector2Array:
 	set(value):
 		uvs = value
@@ -23,4 +28,4 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	draw_colored_polygon(points, Color.WHITE, uvs, texture)
+	draw_colored_polygon(points, color, uvs, texture)

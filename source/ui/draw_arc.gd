@@ -13,9 +13,9 @@ enum CountEditMode {
 		improved = value
 		queue_redraw()
 
-@export var position := Vector2.ZERO:
+@export var center := Vector2.ZERO:
 	set(value):
-		position = value
+		center = value
 		queue_redraw()
 
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var radius := 20.0:
@@ -55,6 +55,11 @@ enum CountEditMode {
 			CountEditMode.LINES:
 				count = _line_count
 
+@export var color := Color.WHITE:
+	set(value):
+		color = value
+		queue_redraw()
+
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var width := 2.0:
 	set(value):
 		width = value
@@ -77,28 +82,53 @@ var _point_count := 33
 var _line_count := 32
 
 
-func _draw() -> void:
-	#var name_of_class := get_class()
+func _notification(what: int):
+	match what:
+		NOTIFICATION_ENTER_TREE:
+			_connect()
 
+		NOTIFICATION_EXIT_TREE:
+			_disconnect()
+
+		NOTIFICATION_PARENTED:
+			_connect()
+
+		NOTIFICATION_UNPARENTED:
+			_disconnect()
+
+
+func _ready() -> void:
+	queue_redraw()
+
+
+func _draw() -> void:
 	if improved:
-		CanvasItemFuncs.draw_arc(
-				self,
-				position,
-				radius,
-				start_angle,
-				end_angle,
-				_point_count,
-				Color.WHITE,
-				width,
-				anti_aliasing,
-				anti_aliasing_size)
+		_draw_arc_improved()
 	else:
-		draw_arc(
-				position,
-				radius,
-				start_angle,
-				end_angle,
-				_point_count,
-				Color.WHITE,
-				width,
-				anti_aliasing)
+		draw_arc(center, radius, start_angle, end_angle, _point_count, color,
+				width, anti_aliasing)
+
+
+func _connect():
+	if is_inside_tree():
+		var viewport := get_viewport()
+		if viewport:
+			viewport.size_changed.connect(queue_redraw)
+	queue_redraw()
+
+
+func _disconnect():
+	var viewport := get_viewport()
+	if viewport:
+		viewport.size_changed.disconnect(queue_redraw)
+
+
+func _draw_arc_improved():
+	if anti_aliasing:
+		var aa := CanvasItemFuncs.get_aa(self, anti_aliasing_size * 0.8)
+		var w := clampf(width / aa - anti_aliasing_size * 1.25, 0.0, INF)
+		draw_arc(center / aa, radius / aa, start_angle, end_angle, _point_count,
+				color, w, true)
+	else:
+		draw_arc(center, radius, start_angle, end_angle, _point_count, color,
+				width, false)

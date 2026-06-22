@@ -7,19 +7,24 @@ extends CanvasItem
 		improved = value
 		queue_redraw()
 
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var from := Vector2.ZERO:
+@export var position := Vector2.ZERO:
 	set(value):
-		from = value
+		position = value
 		queue_redraw()
 
-@export_custom(PROPERTY_HINT_NONE, "suffix:px") var to := Vector2.ZERO:
+@export_custom(PROPERTY_HINT_NONE, "suffix:px") var radius := 20.0:
 	set(value):
-		to = value
+		radius = value
 		queue_redraw()
 
 @export var color := Color.WHITE:
 	set(value):
 		color = value
+		queue_redraw()
+
+@export var filled := true:
+	set(value):
+		filled = value
 		queue_redraw()
 
 @export_custom(PROPERTY_HINT_NONE, "suffix:px") var width := 2.0:
@@ -61,9 +66,9 @@ func _ready() -> void:
 
 func _draw() -> void:
 	if improved:
-		_draw_line_improved()
+		_draw_circle_improved()
 	else:
-		draw_line(from, to, Color.WHITE, width, anti_aliasing)
+		draw_circle(position, radius, color, filled, width, anti_aliasing)
 
 
 func _connect():
@@ -80,12 +85,11 @@ func _disconnect():
 		viewport.size_changed.disconnect(queue_redraw)
 
 
-func _draw_line_improved():
+func _draw_circle_improved():
 	var aa := CanvasItemFuncs.get_aa(self, anti_aliasing_size * 0.8)
-	#var offset := Vector2.ONE * Math.triangle_wave(width, 2)/2
-	#offset *= aa
-	if anti_aliasing:
-		var w := clampf(width / aa - anti_aliasing_size * 1.25, 0.0, INF)
-		draw_line(from / aa, to / aa, color, w, true)
+	if filled:
+		draw_circle(position / aa, radius / aa - anti_aliasing_size * 0.625,
+				color, filled, -1, true)
 	else:
-		draw_line(from, to, color, width, false)
+		var w := clampf(width / aa - anti_aliasing_size * 1.25, 0.0, INF)
+		draw_circle(position / aa, radius / aa, color, filled, w, true)

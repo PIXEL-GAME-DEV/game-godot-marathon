@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://u2bouyy4kvg0"]
 
-[ext_resource type="Script" uid="uid://bnwyw5y5fuot4" path="res://source/script/polyline.gd" id="2_6q558"]
+[ext_resource type="Script" uid="uid://bnwyw5y5fuot4" path="res://source/script/draw_polyline.gd" id="2_6q558"]
 
-[node name="RetRocketArrow" type="Node2D"]
+[node name="RetRocketArrow" type="Node2D" unique_id=1607398988]
 script = ExtResource("2_6q558")
 points = PackedVector2Array(31, -7, 18, 0, 31, 7)
 metadata/_custom_type_script = "uid://bnwyw5y5fuot4"
