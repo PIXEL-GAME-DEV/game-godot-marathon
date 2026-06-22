@@ -1,55 +1,8 @@
 [gd_scene format=3 uid="uid://dojjig8fcke1t"]
 
+[ext_resource type="Texture2D" uid="uid://cokc5nl0202bm" path="res://assets/textures/ui/ret_shotgun.png" id="1_b66rn"]
 [ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/draw_circle.gd" id="2_03nlb"]
-[ext_resource type="Material" uid="uid://vft2418maqcq" path="res://assets/materials/shader/canvas_item/screen.tres" id="2_a7hcv"]
-[ext_resource type="Script" uid="uid://c40rxkufutmua" path="res://source/script/rect.gd" id="3_a7hcv"]
-
-[sub_resource type="GDScript" id="GDScript_qn5ua"]
-script/source = "@tool
-extends Node2D
-
-
-@export var improved := true:
-	set(value):
-		improved = value
-		queue_redraw()
-
-@export_custom(PROPERTY_HINT_NONE, \"suffix:px\") var radius := 20.0:
-	set(value):
-		radius = value
-		queue_redraw()
-
-@export var filled := true:
-	set(value):
-		filled = value
-		queue_redraw()
-
-@export_custom(PROPERTY_HINT_NONE, \"suffix:px\") var width := 2.0:
-	set(value):
-		width = value
-		queue_redraw()
-
-
-@export_group(\"Anti_aliasing\", \"anti_aliasing\")
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, \"\") var anti_aliasing := true:
-	set(value):
-		anti_aliasing = value
-		queue_redraw()
-
-@export_range(0.01, 10, 0.001, \"suffix:px\") var anti_aliasing_size := 1.0:
-	set(value):
-		anti_aliasing_size = value
-		queue_redraw()
-
-
-func _draw() -> void:
-	if improved:
-		CanvasItemFuncs.draw_circle(self, Vector2.ZERO, radius, Color.WHITE,
-				filled, width, anti_aliasing, anti_aliasing_size)
-	else:
-		draw_circle(Vector2.ZERO, radius, Color.WHITE, filled, width,
-				anti_aliasing)
-"
+[ext_resource type="Script" uid="uid://crdl0hix1fm4a" path="res://source/ui/draw_arc.gd" id="3_qn5ua"]
 
 [node name="RetShotgun" type="Control" unique_id=1893921676]
 modulate = Color(0, 1, 0, 1)
@@ -69,60 +22,65 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1987908852]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -608.0
-offset_top = -328.0
-offset_right = -608.0
-offset_bottom = -328.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" type="Control" parent="CenterContainer" unique_id=1145396226]
-layout_mode = 2
-script = ExtResource("2_03nlb")
-radius = 16.0
-color = null
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="CenterContainer" unique_id=1475682349]
-position = Vector2(608, 328)
-copy_mode = 2
-rect = Rect2(0, 0, 64, 64)
-
-[node name="InnerRing" type="Node2D" parent="CenterContainer" unique_id=36259558]
-self_modulate = Color(1, 1, 1, 0.21960784)
-position = Vector2(640, 360)
-script = SubResource("GDScript_qn5ua")
-radius = 16.0
-filled = false
-width = 4.0
-
-[node name="RectPlus1" type="Control" parent="CenterContainer" unique_id=1035807185]
-material = ExtResource("2_a7hcv")
-layout_mode = 2
-script = ExtResource("3_a7hcv")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="RectPlus2" type="Control" parent="CenterContainer" unique_id=1725619778]
-material = ExtResource("2_a7hcv")
-layout_mode = 2
-script = ExtResource("3_a7hcv")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="OuterRing" type="Node2D" parent="CenterContainer" unique_id=231682306]
-self_modulate = Color(1, 1, 1, 0.627451)
-position = Vector2(640, 360)
-script = SubResource("GDScript_qn5ua")
-radius = 19.0
-filled = false
-
 [node name="TextureRect" type="TextureRect" parent="." unique_id=503500486]
+visible = false
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("1_b66rn")
+
+[node name="Ring" type="Control" parent="." unique_id=1145396226]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_03nlb")
+radius = 19.0
+color = Color(1, 1, 1, 0.6)
+filled = false
+
+[node name="Ring2" type="Control" parent="." unique_id=1738659612]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_qn5ua")
+radius = 16.5
+start_angle = -1.5707963267948966
+end_angle = 0.0
+color = Color(1, 1, 1, 0.21960784)
+width = 5.0
+
+[node name="Ring3" type="Control" parent="." unique_id=1263771465]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_qn5ua")
+radius = 16.5
+start_angle = 1.5707963267948966
+end_angle = 3.141592653589793
+color = Color(1, 1, 1, 0.21960784)
+width = 5.0

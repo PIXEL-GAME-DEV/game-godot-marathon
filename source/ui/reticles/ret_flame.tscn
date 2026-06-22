@@ -1,12 +1,31 @@
 [gd_scene format=3 uid="uid://bnrtkjxhte3uq"]
 
+[ext_resource type="Texture2D" uid="uid://datmhcxj4alc7" path="res://assets/textures/ui/ret_flame.png" id="1_w6ya7"]
+[ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/draw_circle.gd" id="2_akwdx"]
 [ext_resource type="PackedScene" uid="uid://cqse1ofole2av" path="res://source/ui/reticles/ret_flame_arrow.tscn" id="2_tgn3c"]
-[ext_resource type="Script" uid="uid://bdvrw4jmfxatd" path="res://source/script/circle_2d.gd" id="2_yacgv"]
 
 [node name="RetFlame" type="Control" unique_id=1728596764]
 modulate = Color(0, 1, 0, 1)
 custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
 layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_behavior_recursive = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1763840959]
+visible = false
+texture_filter = 1
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -14,20 +33,23 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-mouse_behavior_recursive = 1
+texture = ExtResource("1_w6ya7")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=267691797]
 copy_mode = 2
 rect = Rect2(0, 0, 64, 64)
 
-[node name="Circle2D" type="Node2D" parent="." unique_id=514861436]
+[node name="Circle" type="Control" parent="." unique_id=1800661426]
 self_modulate = Color(1, 1, 1, 0.5019608)
 use_parent_material = true
-position = Vector2(32, 32)
-script = ExtResource("2_yacgv")
+anchors_preset = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 32.0
+script = ExtResource("2_akwdx")
 radius = 18.0
 filled = false
-metadata/_custom_type_script = "uid://bdvrw4jmfxatd"
 
 [node name="RetFlameArrow" parent="." unique_id=480766630 instance=ExtResource("2_tgn3c")]
 use_parent_material = true

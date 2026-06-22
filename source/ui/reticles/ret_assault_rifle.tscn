@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://drhaa80ogv7ea" path="res://assets/textures/ui/ret_machinegun.png" id="5_orsqc"]
 
 [node name="RetMachinegun" type="Control" unique_id=1394200693]
+modulate = Color(0, 1, 0, 1)
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 8
@@ -18,6 +19,7 @@ grow_vertical = 2
 mouse_behavior_recursive = 1
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1816034159]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,6 +46,7 @@ grow_vertical = 2
 script = ExtResource("1_pl31b")
 position = Vector2(11, 11)
 radius = 10.0
+color = Color(1, 1, 1, 0.5019608)
 filled = false
 
 [node name="Multiline" type="Control" parent="." unique_id=1478499440]
@@ -65,29 +68,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_bl2nu")
 points = PackedVector2Array(49, 30, 60, 30, 30, 49, 30, 60, 11, 30, 0, 30, 30, 0, 30, 11)
+color = Color(1, 1, 1, 0.3019608)
 
-[node name="OuterRing" type="Control" parent="." unique_id=1463206930]
-visible = false
-custom_minimum_size = Vector2(64, 64)
-custom_maximum_size = Vector2(64, 64)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_pl31b")
-position = Vector2(32, 32)
-radius = 31.0
-filled = false
-
-[node name="Control1" type="Control" parent="." unique_id=2012765214]
+[node name="Arc1" type="Control" parent="." unique_id=2012765214]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -101,8 +84,9 @@ radius = 31.0
 start_angle = -0.29670597283903605
 end_angle = 0.29670597283903605
 count = 9
+color = Color(1, 1, 1, 0.5019608)
 
-[node name="Control2" type="Control" parent="." unique_id=1146782914]
+[node name="Arc2" type="Control" parent="." unique_id=1146782914]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -117,8 +101,9 @@ radius = 31.0
 start_angle = -0.29670597283903605
 end_angle = 0.29670597283903605
 count = 9
+color = Color(1, 1, 1, 0.5019608)
 
-[node name="Control3" type="Control" parent="." unique_id=318311324]
+[node name="Arc3" type="Control" parent="." unique_id=318311324]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -133,8 +118,9 @@ radius = 31.0
 start_angle = -0.29670597283903605
 end_angle = 0.29670597283903605
 count = 9
+color = Color(1, 1, 1, 0.5019608)
 
-[node name="Control4" type="Control" parent="." unique_id=607522009]
+[node name="Arc4" type="Control" parent="." unique_id=607522009]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -149,3 +135,4 @@ radius = 31.0
 start_angle = -0.29670597283903605
 end_angle = 0.29670597283903605
 count = 9
+color = Color(1, 1, 1, 0.5019608)

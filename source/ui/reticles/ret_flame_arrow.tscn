@@ -14,27 +14,46 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Arc2D1" type="Node2D" parent="." unique_id=737234192]
+[node name="Arc2D" type="Control" parent="." unique_id=1630552977]
 material = ExtResource("1_fsohp")
+anchors_preset = 0
 script = ExtResource("2_giahf")
-radius = 18.0
+radius = 16.0
 start_angle = -0.22689280275926285
 end_angle = 0.22689280275926285
-width = 16.57
-metadata/_custom_type_script = "uid://c5belsintpoms"
+width = 32.0
 
-[node name="Arc2D2" type="Node2D" parent="." unique_id=935551952]
+[node name="Arc2D2" type="Control" parent="." unique_id=1565441681]
+visible = false
 use_parent_material = true
+anchors_preset = 0
 script = ExtResource("2_giahf")
-radius = 14.0
+radius = 13.5
 start_angle = -0.10471975511965978
 end_angle = 0.10471975511965978
 width = 3.0
-metadata/_custom_type_script = "uid://c5belsintpoms"
+
+[node name="Arc2D3" type="Control" parent="." unique_id=379335658]
+use_parent_material = true
+anchors_preset = 0
+script = ExtResource("2_giahf")
+start_angle = -0.15707963267948966
+end_angle = 0.15707963267948966
+width = 16.0
+
+[node name="Arc2D4" type="Control" parent="." unique_id=496983123]
+material = ExtResource("1_fsohp")
+anchors_preset = 0
+script = ExtResource("2_giahf")
+radius = 22.0
+start_angle = -0.06981317007977318
+end_angle = 0.06981317007977318
+width = 13.0
 
 [node name="Line2DPlus2" type="Node2D" parent="." unique_id=384185757]
 visible = false
 use_parent_material = true
+position = Vector2(-1.32, 0)
 rotation = 0.06981317
 script = ExtResource("3_p7naq")
 from = Vector2(15.5, 0)
@@ -42,6 +61,8 @@ to = Vector2(26, 0)
 width = 1.0
 
 [node name="Node2D" type="Node2D" parent="." unique_id=68865595]
+visible = false
+position = Vector2(-13.15, 0)
 rotation = -0.10471976
 
 [node name="Line2DPlus" type="Node2D" parent="Node2D" unique_id=962216555]

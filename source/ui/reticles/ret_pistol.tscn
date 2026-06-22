@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://863uq1iokyt7"]
 
-[ext_resource type="Script" uid="uid://bdvrw4jmfxatd" path="res://source/script/circle_2d.gd" id="1_d4cnk"]
-[ext_resource type="Material" uid="uid://vft2418maqcq" path="res://assets/materials/shader/canvas_item/screen.tres" id="2_em3yr"]
-[ext_resource type="Script" uid="uid://c40rxkufutmua" path="res://source/script/rect.gd" id="4_fvv8i"]
+[ext_resource type="Texture2D" uid="uid://c0k64umm6o2c0" path="res://assets/textures/ui/ret_pistol.png" id="1_3p6lu"]
+[ext_resource type="Script" uid="uid://ccbjofmfvujse" path="res://source/ui/draw_circle.gd" id="2_xf4j4"]
+[ext_resource type="Script" uid="uid://crdl0hix1fm4a" path="res://source/ui/draw_arc.gd" id="3_a71rm"]
 
 [node name="RetPistol" type="Control" unique_id=1638415398]
 modulate = Color(0, 1, 0, 1)
 custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -21,72 +22,110 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 1
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=897912989]
-copy_mode = 2
-rect = Rect2(0, 0, 64, 64)
-
-[node name="OuterCircle2D1" type="Node2D" parent="." unique_id=1809053747]
-self_modulate = Color(1, 1, 1, 0.28235295)
-use_parent_material = true
-position = Vector2(32, 32)
-script = ExtResource("1_d4cnk")
-radius = 12.5
-filled = false
-width = 7.0
-
-[node name="RectPlus1" type="Control" parent="." unique_id=2138291684]
-material = ExtResource("2_em3yr")
-anchors_preset = 0
+[node name="TextureRect" type="TextureRect" parent="." unique_id=920072575]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
 offset_right = 32.0
 offset_bottom = 32.0
-script = ExtResource("4_fvv8i")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_3p6lu")
 
-[node name="RectPlus2" type="Control" parent="." unique_id=223474733]
-material = ExtResource("2_em3yr")
-anchors_preset = 0
-offset_left = 32.0
-offset_top = 32.0
-offset_right = 64.0
-offset_bottom = 64.0
-script = ExtResource("4_fvv8i")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="BackBufferCopy2" type="BackBufferCopy" parent="." unique_id=1949184455]
-copy_mode = 2
-rect = Rect2(0, 0, 64, 64)
-
-[node name="OuterCircle2D2" type="Node2D" parent="." unique_id=308841400]
-self_modulate = Color(1, 1, 1, 0.2)
-use_parent_material = true
-position = Vector2(32, 32)
-script = ExtResource("1_d4cnk")
-radius = 12.5
-filled = false
-width = 7.0
-
-[node name="Rect2D3" type="Control" parent="." unique_id=1692182237]
-material = ExtResource("2_em3yr")
-anchors_preset = 0
-offset_left = 32.0
-offset_right = 64.0
-offset_bottom = 32.0
-script = ExtResource("4_fvv8i")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="Rect2D4" type="Control" parent="." unique_id=1501989759]
-material = ExtResource("2_em3yr")
-anchors_preset = 0
-offset_top = 32.0
-offset_right = 32.0
-offset_bottom = 64.0
-script = ExtResource("4_fvv8i")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="InnerCircle2D" type="Node2D" parent="." unique_id=1847495871]
-self_modulate = Color(1, 1, 1, 0.78431374)
-use_parent_material = true
-position = Vector2(32, 32)
-script = ExtResource("1_d4cnk")
+[node name="Ring" type="Control" parent="." unique_id=150629567]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = 23.0
+offset_right = -23.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_xf4j4")
+position = Vector2(9, 9)
 radius = 8.0
+color = Color(1, 1, 1, 0.8039216)
 filled = false
+
+[node name="Arc1" type="Control" parent="." unique_id=608762517]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_a71rm")
+center = Vector2(16, 16)
+radius = 12.5
+end_angle = 1.5707963267948966
+color = Color(1, 1, 1, 0.2)
+width = 7.0
+
+[node name="Arc2" type="Control" parent="." unique_id=2138157464]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_a71rm")
+center = Vector2(16, 16)
+radius = 12.5
+start_angle = 1.5707963267948966
+end_angle = 3.141592653589793
+color = Color(1, 1, 1, 0.28235295)
+width = 7.0
+
+[node name="Arc3" type="Control" parent="." unique_id=1036201534]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_a71rm")
+center = Vector2(16, 16)
+radius = 12.5
+start_angle = 3.141592653589793
+end_angle = 4.71238898038469
+color = Color(1, 1, 1, 0.2)
+width = 7.0
+
+[node name="Arc4" type="Control" parent="." unique_id=1963586665]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_a71rm")
+center = Vector2(16, 16)
+radius = 12.5
+start_angle = 4.71238898038469
+end_angle = 6.283185307179586
+color = Color(1, 1, 1, 0.28235295)
+width = 7.0

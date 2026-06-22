@@ -1,12 +1,17 @@
 [gd_scene format=3 uid="uid://dlmnl7a36ussr"]
 
-[ext_resource type="StyleBox" uid="uid://dxndnglg0hmst" path="res://source/ui/reticles/ret_plasma/ret_plasma_inner.tres" id="1_hic4m"]
+[ext_resource type="StyleBox" uid="uid://dxndnglg0hmst" path="res://source/ui/reticles/ret_plasma/ret_plasma_outer.tres" id="1_hic4m"]
+[ext_resource type="Texture2D" uid="uid://bxj3gcps7pskj" path="res://assets/textures/ui/ret_plasma.png" id="1_wnj81"]
 [ext_resource type="Material" uid="uid://vft2418maqcq" path="res://assets/materials/shader/canvas_item/screen.tres" id="2_wnj81"]
 [ext_resource type="Texture2D" uid="uid://b6kxy56gse0vm" path="res://assets/textures/gradient/ret_plasma.tres" id="3_hwro3"]
-[ext_resource type="StyleBox" uid="uid://dtu337yj1ts7q" path="res://source/ui/reticles/ret_plasma/ret_plasma_outer.tres" id="4_blw56"]
-[ext_resource type="Script" uid="uid://c40rxkufutmua" path="res://source/script/rect.gd" id="5_exo66"]
+[ext_resource type="StyleBox" uid="uid://dtu337yj1ts7q" path="res://source/ui/reticles/ret_plasma/ret_plasma_inner.tres" id="4_blw56"]
+[ext_resource type="StyleBox" uid="uid://r1w0x47l2447" path="res://assets/themes/terminal/boxes/rect.tres" id="6_wnj81"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6smno"]
+corner_radius_top_left = 1
 
 [node name="RetPlasma" type="Control" unique_id=2101831386]
+modulate = Color(0, 1, 0, 1)
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 8
@@ -17,6 +22,22 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_behavior_recursive = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1264785810]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_wnj81")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1266495706]
 position = Vector2(32, 32)
@@ -33,47 +54,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
+offset_left = -17.0
+offset_top = -17.0
+offset_right = 17.0
+offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_hic4m")
 
-[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=708259161]
-material = ExtResource("2_wnj81")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = -1.0
-offset_right = 1.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_hwro3")
-expand_mode = 1
-
-[node name="TextureRect2" type="TextureRect" parent="Panel" unique_id=317840417]
-material = ExtResource("2_wnj81")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_hwro3")
-expand_mode = 1
-flip_h = true
-flip_v = true
-
-[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=655909988]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=160872102]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,40 +79,65 @@ material = ExtResource("2_wnj81")
 layout_mode = 2
 theme_override_styles/panel = ExtResource("4_blw56")
 
-[node name="RectPlus" type="Control" parent="." unique_id=292079034]
-self_modulate = Color(1, 1, 1, 0.5019608)
-use_parent_material = true
-custom_minimum_size = Vector2(12, 12)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -6.0
-offset_top = -6.0
-offset_right = 6.0
-offset_bottom = 6.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_exo66")
-filled = false
-metadata/_custom_type_script = "uid://c40rxkufutmua"
-
-[node name="MarginContainer" type="MarginContainer" parent="RectPlus" unique_id=665343170]
+[node name="MarginContainer2" type="MarginContainer" parent="Panel" unique_id=1518338086]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = -3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = -3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = -1
+theme_override_constants/margin_right = -1
+theme_override_constants/margin_bottom = 10
 
-[node name="RectPlus" type="Control" parent="RectPlus/MarginContainer" unique_id=1629352423]
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer2" unique_id=708259161]
 material = ExtResource("2_wnj81")
 layout_mode = 2
-script = ExtResource("5_exo66")
-metadata/_custom_type_script = "uid://c40rxkufutmua"
+texture = ExtResource("3_hwro3")
+expand_mode = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="Panel" unique_id=747234315]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = -1
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = -1
+
+[node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer3" unique_id=317840417]
+material = ExtResource("2_wnj81")
+layout_mode = 2
+texture = ExtResource("3_hwro3")
+expand_mode = 1
+flip_h = true
+flip_v = true
+
+[node name="Panel2" type="Panel" parent="." unique_id=1193872677]
+self_modulate = Color(1, 1, 1, 0.5019608)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 39.0
+offset_bottom = 39.0
+theme_override_styles/panel = ExtResource("6_wnj81")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel2" unique_id=625077088]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 12.0
+offset_bottom = 12.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = -6
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = -6
+
+[node name="Panel2" type="Panel" parent="Panel2/MarginContainer" unique_id=1145057740]
+material = ExtResource("2_wnj81")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6smno")

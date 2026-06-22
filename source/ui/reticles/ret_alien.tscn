@@ -4,40 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://m0rxktd0yt8b" path="res://assets/textures/ui/ret_alien.png" id="3_htmup"]
 
 [node name="RetAlien" type="Control" unique_id=1670870301]
+modulate = Color(1, 0, 0, 1)
 custom_minimum_size = Vector2(64, 64)
 custom_maximum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2089133198]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control" type="Control" parent="CenterContainer" unique_id=34677029]
-layout_mode = 2
-script = ExtResource("2_bilyw")
-position = Vector2(0, -13)
-radius = 4.0
-
-[node name="Control2" type="Control" parent="CenterContainer" unique_id=1895709200]
-layout_mode = 2
-script = ExtResource("2_bilyw")
-position = Vector2(12, 8)
-radius = 4.0
-
-[node name="Control3" type="Control" parent="CenterContainer" unique_id=358227683]
-layout_mode = 2
-script = ExtResource("2_bilyw")
-position = Vector2(-12, 8)
-radius = 4.0
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1621539417]
 visible = false
@@ -48,3 +21,63 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_htmup")
+
+[node name="Control" type="Control" parent="." unique_id=34677029]
+custom_minimum_size = Vector2(8, 8)
+custom_maximum_size = Vector2(8, 8)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 16.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_bilyw")
+position = Vector2(4, 4)
+radius = 4.0
+color = Color(1, 1, 1, 0.8)
+
+[node name="Control2" type="Control" parent="." unique_id=1484739213]
+custom_minimum_size = Vector2(8, 8)
+custom_maximum_size = Vector2(8, 8)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_bilyw")
+position = Vector2(4, 4)
+radius = 4.0
+color = Color(1, 1, 1, 0.8)
+
+[node name="Control3" type="Control" parent="." unique_id=75185025]
+custom_minimum_size = Vector2(8, 8)
+custom_maximum_size = Vector2(8, 8)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -17.0
+offset_right = 4.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_bilyw")
+position = Vector2(4, 4)
+radius = 4.0
+color = Color(1, 1, 1, 0.8)
