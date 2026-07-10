@@ -1,4 +1,6 @@
-@tool class_name StyleBoxFlatPlus extends StyleBoxFlat
+@tool
+class_name StyleBoxFlatPlus
+extends StyleBoxFlat
 
 
 @export_group("Negative Expand Margins", "margin_")

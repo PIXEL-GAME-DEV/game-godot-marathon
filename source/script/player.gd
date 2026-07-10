@@ -2,9 +2,8 @@ extends RigidBody3D
 
 
 @export var turn_speed := 1.0
-@export var move_speed := 5.0
-#@export var air_force := 0.01
-@export var jump_impulse := 1.0
+@export var move_accel := 5.0
+@export var jump_force: float = 50
 @export var weapon: Weapon:
 	set(value):
 		weapon = value
@@ -15,27 +14,18 @@ extends RigidBody3D
 		if weapon.reticle:
 			_reticle = weapon.reticle.instantiate()
 			add_child(_reticle)
-
 @export_group("Light", "light_")
 @export var light: Light3D
 @export var light_energy := 1.0
 
 var turn_input: Vector2 = Vector2.ZERO
 var can_shoot: bool = true
-
-#var zoom := 1.0:
-	#set(value):
-		#if value != zoom:
-			#var tween := get_tree().create_tween()
-			#tween.set_trans(Tween.TRANS_EXPO)
-			#tween.set_ease(Tween.EASE_IN_OUT)
-			#tween.tween_property(%Camera, "fov", 75.0/value, 0.2)
-		#zoom = value
-
 var light_on := false: set = set_light, get = is_light_on
 
-
 var _reticle: Node
+var _prev_vel_by_body: Dictionary[int, Vector3]
+
+@onready var leg_cast: ShapeCast3D = $LegCast
 
 
 func _ready() -> void:
@@ -47,38 +37,47 @@ func _unhandled_input(event: InputEvent) -> void:
 		turn_input += event.screen_relative
 
 
-func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	var delta := get_physics_process_delta_time()
-	state.transform = state.transform.rotated_local(Vector3.UP, -turn_input.x * turn_speed * delta)
-	turn_input.x = 0
+func _physics_process(delta: float) -> void:
+	var ground: Object
+	var ground_normal := global_basis.y
+	if leg_cast.is_colliding():
+		ground = leg_cast.get_collider(0)
+		ground_normal = leg_cast.get_collision_normal(0)
+		var lc_col_safe_frac := leg_cast.get_closest_collision_safe_fraction()
+		var lc_col_pos := leg_cast.to_global(lc_col_safe_frac * leg_cast.target_position)
+		var g_accel := get_body_acceleration(ground)
+		var g_accel_dir := g_accel.normalized()
+
+		# Cancels out accelerations and gravity so we float of the ground.
+		#linear_velocity += g_accel * delta
+
+		# Stand perpendicularly to the acceleration of the ground.
+		apply_torque(global_basis.y.cross(g_accel) * mass)
+
+		if Input.is_action_pressed("jump"):
+			apply_central_force(global_basis.y * jump_force * mass)
+		else: # Extra force to float some distance away.
+			var d := (lc_col_pos + g_accel_dir * 0.5) - global_position
+			apply_central_force(hookes(d, linear_velocity.project(g_accel_dir), 100, 10))
 
 	var move_input := Input.get_vector(
-			"move_left",
-			"move_right",
-			"move_forward",
-			"move_backward")
+			"move_left", "move_right",
+			"move_forward", "move_backward")
 
-	var contact_velocity := Vector3.ZERO
+	if move_input:
+		var ground_velocity: Vector3 = get_safe(ground, "linear_velocity", Vector3.ZERO)
+		var relative_velocity := linear_velocity - ground_velocity
+		var move_dir_x := global_basis.x * move_input.x
+		var move_dir_z := global_basis.z * move_input.y
+		var move_dir := (move_dir_x + move_dir_z).slide(ground_normal)
+		move_dir = move_dir.normalized() * move_input.length()
+		#var move_target_velocity := move_dir
+		#var move_velocity_error := move_target_velocity - relative_velocity
+		apply_central_force(hookes(linear_velocity, relative_velocity, 10, 2) * mass)
 
-	if is_on_floor(state):
-		var floor_contact := get_floor_contact(state)
-		contact_velocity = state.get_contact_collider_velocity_at_position(floor_contact)
-
-	var relative_velocity := state.linear_velocity - contact_velocity
-	var move_dir_x := global_basis.x * move_input.x
-	var move_dir_z := global_basis.z * move_input.y
-	var move_dir := move_dir_x + move_dir_z
-	var move_target_velocity := move_dir * move_speed
-	var move_velocity_error := move_target_velocity - relative_velocity
-	#var correction_force: Vector3 = _pid.update(move_velocity_error, delta)
-
-	if is_on_floor(state):
-		state.apply_central_force(move_velocity_error * mass)
-		if Input.is_action_pressed("jump"):
-			state.apply_central_impulse(global_basis.y * jump_impulse * mass)
-
-	if Input.is_action_just_pressed("toggle_light"):
-		toggle_light()
+	angular_velocity = Vector3.ZERO
+	apply_torque(-global_basis.y * mass * turn_input.x * turn_speed)
+	turn_input.x = 0
 
 	if Input.is_action_pressed("trigger1") and weapon and can_shoot:
 		can_shoot = false
@@ -112,6 +111,9 @@ func _process(delta: float) -> void:
 	%Head.rotation.x = clampf(%Head.rotation.x, -PI / 2, PI / 2)
 	turn_input.y = 0
 
+	if Input.is_action_just_pressed("toggle_light"):
+		toggle_light()
+
 
 func set_light(value: bool):
 	light_on = value
@@ -138,29 +140,53 @@ func reset_fire() -> void:
 	can_shoot = true
 
 
-#func turn()
+func hookes(delta: Variant, vel: Variant, stiff: Variant, damp: Variant) -> Variant:
+	return stiff * delta - damp * vel
 
 
-func get_floor_contact(state: PhysicsDirectBodyState3D) -> int:
-	for contact in state.get_contact_count():
-		var contact_normal := state.get_contact_local_normal(contact)
-		if contact_normal.dot(state.total_gravity.normalized()) < -0.5:
-			return contact
-	return -1
+func get_safe(object: Object, property: StringName, default: Variant) -> Variant:
+	if not object:
+		return default
+	if property in object:
+		return object.get(property)
+	else:
+		return default
 
 
-func is_on_floor(_state: PhysicsDirectBodyState3D) -> bool:
-	#return get_floor_contact(state) > -1
-	return true
+func get_body_acceleration(body: Node3D) -> Vector3:
+	if not body:
+		return Vector3.ZERO
+
+	var delta := get_physics_process_delta_time()
+
+	var b_gravity := get_gravity()
+	if body.has_method("get_gravity"):
+		b_gravity = body.get_gravity()
+
+	if body is not PhysicsBody3D:
+		return -b_gravity
+
+	# Only compute using bodies that actually provide linear_velocity meaningfully.
+	var b_vel: Vector3 = get_safe(body, "linear_velocity", Vector3.ZERO)
+
+	var key := body.get_instance_id()
+	var has_prev := _prev_vel_by_body.has(key)
+	var b_vel_prev: Vector3 = _prev_vel_by_body.get(key, Vector3.ZERO)
+
+	# Update stored velocity now (so next frame has it).
+	_prev_vel_by_body[key] = b_vel
+
+	# If this ground body just became ground, you can't infer accel yet.
+	if not has_prev:
+		return -b_gravity
+
+	var b_accel := (b_vel - b_vel_prev) / delta
+	return b_accel - b_gravity
 
 
-func get_ceiling_contact(state: PhysicsDirectBodyState3D) -> int:
-	for contact in state.get_contact_count():
-		var contact_normal := state.get_contact_local_normal(contact)
-		if contact_normal.dot(state.total_gravity.normalized()) > 0.5:
-			return contact
-	return -1
 
-
-func is_on_ceiling(state: PhysicsDirectBodyState3D) -> bool:
-	return get_ceiling_contact(state) > -1
+	#_ground_prev = _ground
+	#_ground = body
+	#_ground_vel_prev = _ground_vel
+	#_ground_vel = get_safe(body, "linear_velocity", Vector3.ZERO)
+	#return (_ground_vel - _ground_vel_prev) / delta - body_gravity

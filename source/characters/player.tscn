@@ -7,42 +7,54 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_h1d7b"]
 friction = 0.0
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_jt47v"]
-height = 1.6
+[sub_resource type="SphereShape3D" id="SphereShape3D_sukl3"]
+radius = 0.3
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_jt47v"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_t4coc"]
+radius = 0.29
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jvq18"]
+radius = 0.27
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h1d7b"]
+radius = 0.3
 height = 1.6
-rings = 0
 
 [node name="Player" type="RigidBody3D" unique_id=544577516 node_paths=PackedStringArray("light")]
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-mass = 41.859
 physics_material_override = SubResource("PhysicsMaterial_h1d7b")
+can_sleep = false
 script = ExtResource("1_h1d7b")
 turn_speed = 0.13
-move_speed = 13.57
-jump_impulse = 5.52
 weapon = ExtResource("2_f7lk6")
-light = NodePath("Head/Light")
+light = NodePath("SpringArm3D/Marker3D/Head/Light")
 light_energy = 4.0
 
 [node name="CollisionShape" type="CollisionShape3D" parent="." unique_id=750839118]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-shape = SubResource("CylinderShape3D_jt47v")
+shape = SubResource("SphereShape3D_sukl3")
 
-[node name="Head" type="Camera3D" parent="." unique_id=1106843628]
+[node name="LegCast" type="ShapeCast3D" parent="." unique_id=1113025867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("SphereShape3D_t4coc")
+target_position = Vector3(0, -0.7, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=309543233]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("SphereShape3D_jvq18")
+spring_length = 0.7
+
+[node name="Marker3D" type="Marker3D" parent="SpringArm3D" unique_id=1794442660]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+
+[node name="Head" type="Camera3D" parent="SpringArm3D/Marker3D" unique_id=1106843628]
 unique_name_in_owner = true
 physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 cull_mask = 1048573
 current = true
 
-[node name="AudioListener3D" type="AudioListener3D" parent="Head" unique_id=1489537620]
+[node name="AudioListener3D" type="AudioListener3D" parent="SpringArm3D/Marker3D/Head" unique_id=1489537620]
 doppler_tracking = 1
 
-[node name="Light" type="SpotLight3D" parent="Head" unique_id=158820918]
+[node name="Light" type="SpotLight3D" parent="SpringArm3D/Marker3D/Head" unique_id=158820918]
 light_energy = 0.0
 shadow_enabled = true
 spot_range = 10.0
@@ -50,12 +62,9 @@ spot_attenuation = 2.0
 spot_angle = 60.0
 spot_angle_attenuation = 0.5
 
-[node name="Timer" type="Timer" parent="." unique_id=1151062395]
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1864053067]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 visible = false
 gi_mode = 2
-mesh = SubResource("CylinderMesh_jt47v")
+mesh = SubResource("CapsuleMesh_h1d7b")
 
 [node name="Hud" parent="." unique_id=138916631 instance=ExtResource("3_dl7oa")]

@@ -1,4 +1,6 @@
-@tool class_name StyleBoxTexturePlus extends StyleBoxTexture
+@tool
+class_name StyleBoxTexturePlus
+extends StyleBoxTexture
 
 
 @export_group("Negative Expand Margins", "margin_")

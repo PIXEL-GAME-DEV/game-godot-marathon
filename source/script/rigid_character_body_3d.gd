@@ -31,22 +31,22 @@ var collision_travel: Vector3
 
 func _physics_process(_delta: float) -> void:
 	var gravity := get_gravity() * gravity_scale
-	
+
 	if gravity:
 		motion_mode = CharacterBody3D.MOTION_MODE_GROUNDED
 		up_direction = -gravity.normalized()
 	else:
 		motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
-	
+
 	apply_accel(gravity)
-	
+
 	match move_method:
 		MoveMethod.MOVE_AND_SLIDE:
 			move_and_slide()
 			collision = get_last_slide_collision()
 		#MoveMethod.MOVE_AND_COLLIDE:
 			#collision = move_and_collide(velocity * delta)
-	
+
 	if collision:
 		collision_angle = collision.get_angle()
 		collider = collision.get_collider()
@@ -62,10 +62,10 @@ func _physics_process(_delta: float) -> void:
 		collision_position = collision.get_position()
 		collision_remainder = collision.get_remainder()
 		collision_travel = collision.get_travel()
-		
+
 		#var relative_velocity := velocity - collider_velocity
-		
-		
+
+
 		## Friction.
 		#var collider_physics_material: PhysicsMaterial
 		#if collider is RigidBody3D or collider is StaticBody3D:
@@ -78,13 +78,13 @@ func _physics_process(_delta: float) -> void:
 		#var friction_other := 1.0
 		#if collider_physics_material:
 			#friction_other = collider_physics_material.friction
-		
+
 		#var friction_coefficient := friction_self * friction_other
 		#var friction_force := -relative_velocity * 1
 		#velocity -= relative_velocity
 		#apply_instant_accel(friction_force)
-		
-		
+
+
 		## Bounce.
 		velocity = (collision_travel + collision_remainder).bounce(collision_normal)
 
