@@ -3,7 +3,7 @@ extends RigidBody3D
 
 @export var turn_speed: float = 1
 @export var move_speed: float = 10
-@export var move_accel: float = 3
+@export var move_accel: float = 25
 @export var jump_force: float = 30
 @export var weapon: Weapon:
 	set(value):
@@ -29,16 +29,17 @@ var _prev_vel_by_body: Dictionary[int, Vector3]
 @onready var leg_cast: ShapeCast3D = $LegCast
 
 
-func _ready() -> void:
+func _ready():
 	Input.mouse_mode = Input.MouseMode.MOUSE_MODE_CAPTURED
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion:
-		turn_input += event.screen_relative
+		turn_input += event.screen_relative/60
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float):
+	var f_delta := get_process_delta_time()
 	var surface: Object
 	var s_normal := global_basis.y
 
@@ -58,7 +59,8 @@ func _physics_process(_delta: float) -> void:
 			var s_accel_dir := s_accel.normalized()
 
 			# Cancels out accelerations and gravity so we float of the ground.
-			#linear_velocity += g_accel * delta
+			#apply_central_force(s_accel * mass)
+			#linear_velocity += s_accel * delta
 
 			# Stand perpendicularly to the acceleration of the ground.
 			apply_torque(global_basis.y.cross(s_accel) * mass)
@@ -81,20 +83,25 @@ func _physics_process(_delta: float) -> void:
 			var move_dir_x := global_basis.x * move_input.x
 			var move_dir_z := global_basis.z * move_input.y
 			var move_dir := (move_dir_x + move_dir_z).slide(s_normal)
-			move_dir = move_dir.normalized() * move_input.length()
-			var move_target_velocity := move_dir * move_speed
-			var move_velocity_error := move_target_velocity - relative_velocity
-			apply_central_force(move_velocity_error * mass * move_accel)
+			move_dir = move_dir.normalized() * move_input.limit_length().length()
+			var move_vel_target := move_dir * move_speed
+			var move_vel_err := (move_vel_target - relative_velocity).slide(s_normal)
+			if move_vel_err:
+				var move_error_dir := move_vel_err.normalized()
+				apply_central_force(move_error_dir * mass * move_accel)
 		else:
-			apply_central_force(-relative_velocity * mass * move_accel)
+			if relative_velocity:
+				apply_central_force(-relative_velocity.slide(s_normal).limit_length() * mass * move_accel)
 
-	angular_velocity = Vector3.ZERO
-	apply_torque(-global_basis.y * mass * turn_input.x * turn_speed)
+	#angular_velocity = Vector3.ZERO
+	angular_velocity = -global_basis.y * turn_input.x * turn_speed * (f_delta / delta)
 	turn_input.x = 0
 
 
-func _process(delta: float) -> void:
-	turn_input += Input.get_vector("turn_left", "turn_right", "look_up", "look_down")
+func _process(delta: float):
+	turn_input += Input.get_vector(
+		"turn_left", "turn_right",
+		"look_up", "look_down")
 	%Head.rotation.x -= turn_input.y * turn_speed * delta
 	%Head.rotation.x = clampf(%Head.rotation.x, -PI / 2, PI / 2)
 	turn_input.y = 0
@@ -103,29 +110,7 @@ func _process(delta: float) -> void:
 		toggle_light()
 
 	if Input.is_action_pressed("trigger1") and weapon and can_shoot:
-		can_shoot = false
-		get_tree().create_timer(weapon.trigger_main.time_round, false, false).timeout.connect(reset_fire)
-
-		var audio = AudioStreamPlayer.new()
-		audio.finished.connect(audio.queue_free)
-		%Head.add_child(audio)
-		audio.stream = weapon.trigger_main.sound_firing
-		audio.play()
-
-		var projectile := Projectile.new(weapon.trigger_main.projectile)
-		get_tree().root.add_child(projectile)
-		add_collision_exception_with(projectile)
-
-		var impulse_vec: Vector3 = %Head.global_basis.z
-		impulse_vec = impulse_vec.rotated(Math.random_unit_vector(), randf_range(0, weapon.trigger_main.error))
-		projectile.look_at(impulse_vec)
-		projectile.global_position = %Head.global_position
-		projectile.global_position += %Head.global_basis.x * weapon.trigger_main.offset.x
-		projectile.global_position += %Head.global_basis.y * weapon.trigger_main.offset.y
-		projectile.global_position += %Head.global_basis.z * weapon.trigger_main.offset.z
-		#projectile.global_translate(weapon.trigger_main.offset * %Camera.global_basis)
-		projectile.linear_velocity = linear_velocity
-		#projectile.apply_instant_accel(velocity + impulse_vec * projectile.projectile.ballistics.speed)
+		fire()
 
 
 func set_light(value: bool):
@@ -149,7 +134,35 @@ func toggle_light() -> bool:
 	return light_on
 
 
-func reset_fire() -> void:
+func fire():
+	can_shoot = false
+	get_tree().create_timer(
+			weapon.trigger_main.time_round,
+			false, false).timeout.connect(reset_fire)
+
+	var audio = AudioStreamPlayer.new()
+	audio.finished.connect(audio.queue_free)
+	%Head.add_child(audio)
+	audio.stream = weapon.trigger_main.sound_firing
+	audio.play()
+
+	var projectile := Projectile.new(weapon.trigger_main.projectile)
+	get_tree().root.add_child(projectile)
+	add_collision_exception_with(projectile)
+
+	var impulse_vec: Vector3 = %Head.global_basis.z
+	impulse_vec = impulse_vec.rotated(Math.random_unit_vector(), randf_range(0, weapon.trigger_main.error))
+	projectile.look_at(impulse_vec)
+	projectile.global_position = %Head.global_position
+	projectile.global_position += %Head.global_basis.x * weapon.trigger_main.offset.x
+	projectile.global_position += %Head.global_basis.y * weapon.trigger_main.offset.y
+	projectile.global_position += %Head.global_basis.z * weapon.trigger_main.offset.z
+	#projectile.global_translate(weapon.trigger_main.offset * %Camera.global_basis)
+	projectile.linear_velocity = linear_velocity
+	#projectile.apply_instant_accel(velocity + impulse_vec * projectile.projectile.ballistics.speed)
+
+
+func reset_fire():
 	can_shoot = true
 
 

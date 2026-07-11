@@ -24,7 +24,8 @@ height = 1.6
 physics_material_override = SubResource("PhysicsMaterial_h1d7b")
 can_sleep = false
 script = ExtResource("1_h1d7b")
-turn_speed = 0.13
+turn_speed = 3.0
+move_speed = 7.0
 weapon = ExtResource("2_f7lk6")
 light = NodePath("SpringArm3D/Marker3D/Head/Light")
 light_energy = 4.0
@@ -68,3 +69,10 @@ gi_mode = 2
 mesh = SubResource("CapsuleMesh_h1d7b")
 
 [node name="Hud" parent="." unique_id=138916631 instance=ExtResource("3_dl7oa")]
+
+[node name="Currency" type="Label" parent="." unique_id=1005646604]
+offset_left = 3.0
+offset_top = 31.0
+offset_right = 49.0
+offset_bottom = 54.0
+text = "¤$€¥£"
